@@ -11,8 +11,8 @@
 namespace Tailors\PHPUnit\StaticAnalysis\HappyPath\AssertExtendsClass;
 
 use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\InvalidArgumentException;
 
 class Assert extends \PHPUnit\Framework\Assert
 {
@@ -22,7 +22,6 @@ class Assert extends \PHPUnit\Framework\Assert
 /**
  * @throws ExpectationFailedException
  * @throws InvalidArgumentException
- * @throws \Tailors\PHPUnit\InvalidArgumentException
  */
 function consume(string $expected, string $actual): string
 {

@@ -3,7 +3,7 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
@@ -80,7 +80,7 @@ final class ExtendsClassTraitTest extends TestCase
      *
      * @param mixed $subject
      */
-    public function testAssertExtendsClassSucceeds(string $class, $subject): void
+    public function testAssertExtendsClassSucceeds(string $class, $subject, string $message): void
     {
         self::assertExtendsClass($class, $subject);
     }
@@ -103,7 +103,7 @@ final class ExtendsClassTraitTest extends TestCase
      *
      * @param mixed $subject
      */
-    public function testAssertNotExtendsClassSucceeds(string $class, $subject): void
+    public function testAssertNotExtendsClassSucceeds(string $class, $subject, string $message): void
     {
         self::assertNotExtendsClass($class, $subject);
     }
@@ -126,7 +126,7 @@ final class ExtendsClassTraitTest extends TestCase
      *
      * @param mixed $subject
      */
-    public function testExtendsClass(string $class, $subject): void
+    public function testExtendsClass(string $class, $subject, string $message): void
     {
         self::assertThat($subject, self::extendsClass($class));
     }
@@ -136,7 +136,7 @@ final class ExtendsClassTraitTest extends TestCase
      *
      * @param mixed $subject
      */
-    public function testNotExtendsClass(string $class, $subject): void
+    public function testNotExtendsClass(string $class, $subject, string $message): void
     {
         self::assertThat($subject, self::logicalNot(self::extendsClass($class)));
     }

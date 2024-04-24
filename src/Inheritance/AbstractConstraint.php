@@ -3,7 +3,7 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
@@ -13,6 +13,8 @@ namespace Tailors\PHPUnit\Inheritance;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Operator;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use Tailors\PHPUnit\Common\Exporter;
 
 /**
  * Abstract base class for inheritance constraints (ExtendsClass,
@@ -62,7 +64,7 @@ abstract class AbstractConstraint extends Constraint
             return false;
         }
 
-        return in_array($this->expected, $this->inheritance($other), true);
+        return in_array(strtolower($this->expected), array_map('strtolower', $this->inheritance($other)), true);
     }
 
     /**
@@ -92,6 +94,8 @@ abstract class AbstractConstraint extends Constraint
      * Returns an array of "inherited classes" -- eiher interfaces *$class*
      * implements, parent classes it extends or traits it uses, depending on
      * the actual implementation of this constraint.
+     *
+     * @psalm-return array<string>
      */
     abstract protected function inheritance(string $class): array;
 
@@ -139,6 +143,8 @@ abstract class AbstractConstraint extends Constraint
      * @param Operator $operator the $operator of the expression
      * @param mixed    $role     role of $this constraint in the $operator expression
      * @param mixed    $other    evaluated value or object
+     *
+     * @throws InvalidArgumentException
      */
     final protected function failureDescriptionInContext(Operator $operator, $role, $other): string
     {
@@ -155,13 +161,15 @@ abstract class AbstractConstraint extends Constraint
      * Returns short representation of $subject for failureDescription().
      *
      * @param mixed $subject
+     *
+     * @throws InvalidArgumentException
      */
     private function short($subject): string
     {
         if (is_object($subject)) {
             $subject = 'object '.get_class($subject);
         } elseif (!is_string($subject) || !$this->supports($subject)) {
-            $subject = $this->exporter()->export($subject);
+            $subject = Exporter::export($subject);
         }
 
         return $subject;

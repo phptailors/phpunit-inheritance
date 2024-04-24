@@ -3,7 +3,7 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
@@ -84,7 +84,7 @@ final class ImplementsInterfaceTraitTest extends TestCase
      *
      * @param object|string $subject
      */
-    public function testAssertImplementsInterfaceSucceeds(string $interface, $subject): void
+    public function testAssertImplementsInterfaceSucceeds(string $interface, $subject, string $message): void
     {
         self::assertImplementsInterface($interface, $subject);
     }
@@ -107,7 +107,7 @@ final class ImplementsInterfaceTraitTest extends TestCase
      *
      * @param mixed $subject
      */
-    public function testAssertNotImplementsInterfaceSucceeds(string $interface, $subject): void
+    public function testAssertNotImplementsInterfaceSucceeds(string $interface, $subject, string $message): void
     {
         self::assertNotImplementsInterface($interface, $subject);
     }
@@ -130,7 +130,7 @@ final class ImplementsInterfaceTraitTest extends TestCase
      *
      * @param mixed $subject
      */
-    public function testImplementsInterfaceFails(string $interface, $subject): void
+    public function testImplementsInterfaceFails(string $interface, $subject, string $message): void
     {
         self::assertThat($subject, self::logicalNot(self::implementsInterface($interface)));
     }

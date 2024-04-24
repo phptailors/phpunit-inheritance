@@ -3,7 +3,7 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
@@ -12,6 +12,7 @@ namespace Tailors\PHPUnit;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
+use PHPUnit\Framework\ExpectationFailedException;
 use Tailors\PHPUnit\Constraint\ExtendsClass;
 
 trait ExtendsClassTrait
@@ -23,8 +24,7 @@ trait ExtendsClassTrait
      * @param Constraint $constraint
      * @param string     $message
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     abstract public static function assertThat($value, Constraint $constraint, string $message = ''): void;
 
@@ -35,9 +35,8 @@ trait ExtendsClassTrait
      * @param mixed  $subject an object or a class name that is being examined
      * @param string $message custom message
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Tailors\PHPUnit\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public static function assertExtendsClass(string $parent, $subject, string $message = ''): void
     {
@@ -51,9 +50,8 @@ trait ExtendsClassTrait
      * @param mixed  $subject an object or a class name that is being examined
      * @param string $message custom message
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Tailors\PHPUnit\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public static function assertNotExtendsClass(string $parent, $subject, string $message = ''): void
     {
@@ -65,7 +63,7 @@ trait ExtendsClassTrait
      *
      * @param string $parent name of the class that is expected to be extended
      *
-     * @throws \Tailors\PHPUnit\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function extendsClass(string $parent): ExtendsClass
     {

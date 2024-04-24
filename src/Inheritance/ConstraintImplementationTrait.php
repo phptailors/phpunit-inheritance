@@ -3,13 +3,14 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
 
 namespace Tailors\PHPUnit\Inheritance;
 
+use Tailors\PHPUnit\InvalidArgumentException;
 use Tailors\PHPUnit\InvalidReturnValueException;
 use Tailors\PHPUnit\StringArgumentValidator;
 
@@ -31,7 +32,7 @@ use Tailors\PHPUnit\StringArgumentValidator;
 trait ConstraintImplementationTrait
 {
     /**
-     * @throws \Tailors\PHPUnit\InvalidArgumentException
+     * @throws InvalidArgumentException
      *
      * @psalm-assert class-string $expected
      */
@@ -60,11 +61,13 @@ trait ConstraintImplementationTrait
 
     /**
      * @throws InvalidReturnValueException
+     *
+     * @psalm-return array<string>
      */
     protected function inheritance(string $class): array
     {
         $value = (self::$inheritance)($class);
-        self::assertReturnValueIsArray([self::class, '$inheritance'], $value);
+        self::assertReturnValueIsListOfStrings([self::class, '$inheritance'], $value);
 
         return $value;
     }
@@ -98,14 +101,20 @@ trait ConstraintImplementationTrait
      *
      * @param-out ValueType $value
      *
-     * @psalm-assert array $value
+     * @psalm-assert array<string> $value
      *
      * @throws InvalidReturnValueException
      */
-    private static function assertReturnValueIsArray($function, &$value): void
+    private static function assertReturnValueIsListOfStrings($function, &$value): void
     {
         if (!is_array($value)) {
             throw InvalidReturnValueException::fromExpectedTypeAndActualValue($function, 'array', $value);
+        }
+
+        $strings = array_filter($value, 'is_string');
+
+        if (count($strings) < count($value)) {
+            throw InvalidReturnValueException::fromExpectedTypeAndActualValue($function, 'array of strings', $value);
         }
     }
 }

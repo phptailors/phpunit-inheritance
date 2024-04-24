@@ -3,7 +3,7 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
@@ -13,6 +13,7 @@ namespace Tailors\PHPUnit\Inheritance;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Operator;
+use Tailors\PHPUnit\Common\Exporter;
 
 /**
  * Abstract base class for inheritance constraints (ExtendsClass,
@@ -62,7 +63,7 @@ abstract class AbstractConstraint extends Constraint
             return false;
         }
 
-        return in_array($this->expected, $this->inheritance($other), true);
+        return in_array(strtolower($this->expected), array_map('strtolower', $this->inheritance($other)), true);
     }
 
     /**
@@ -92,6 +93,8 @@ abstract class AbstractConstraint extends Constraint
      * Returns an array of "inherited classes" -- eiher interfaces *$class*
      * implements, parent classes it extends or traits it uses, depending on
      * the actual implementation of this constraint.
+     *
+     * @psalm-return array<string>
      */
     abstract protected function inheritance(string $class): array;
 
@@ -161,7 +164,7 @@ abstract class AbstractConstraint extends Constraint
         if (is_object($subject)) {
             $subject = 'object '.get_class($subject);
         } elseif (!is_string($subject) || !$this->supports($subject)) {
-            $subject = $this->exporter()->export($subject);
+            $subject = Exporter::export($subject);
         }
 
         return $subject;

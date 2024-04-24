@@ -3,22 +3,25 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
 
 namespace Tailors\PHPUnit\StaticAnalysis\HappyPath\AssertNotExtendsClass;
 
+use PHPUnit\Framework\ExpectationFailedException;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\InvalidArgumentException;
+
 class Assert extends \PHPUnit\Framework\Assert
 {
-    use \Tailors\PHPUnit\ExtendsClassTrait;
+    use ExtendsClassTrait;
 }
 
 /**
- * @throws \PHPUnit\Framework\ExpectationFailedException
- * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws \Tailors\PHPUnit\InvalidArgumentException
+ * @throws ExpectationFailedException
+ * @throws InvalidArgumentException
  */
 function consume(string $expected, string $actual): string
 {

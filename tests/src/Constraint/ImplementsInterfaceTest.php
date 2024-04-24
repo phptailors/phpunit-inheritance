@@ -3,7 +3,7 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
@@ -81,6 +81,24 @@ final class ImplementsInterfaceTest extends TestCase
                 'interface' => \Traversable::class,
                 'subject'   => \Iterator::class,
             ],
+
+            // class implements interface -- case insensitive match
+            'ImplementsInterfaceTest.php:'.__LINE__ => [
+                'interface' => 'tHrowAble',
+                'subject'   => 'eXceptiOn',
+            ],
+
+            // object of class that implements interface -- case insensitive match
+            'ImplementsInterfaceTest.php:'.__LINE__ => [
+                'interface' => 'tHrowAble',
+                'subject'   => new \Exception(),
+            ],
+
+            // interface that extends interface -- case insensitive match
+            'ImplementsInterfaceTest.php:'.__LINE__ => [
+                'interface' => 'tRaversAble',
+                'subject'   => 'iteRator',
+            ],
         ];
     }
 
@@ -119,17 +137,17 @@ final class ImplementsInterfaceTest extends TestCase
         return [
             'ImplementsInterfaceTest.php:'.__LINE__ => [
                 'argument' => 'non-interface string',
-                'messsage' => $message,
+                'message'  => $message,
             ],
 
             'ImplementsInterfaceTest.php:'.__LINE__ => [
                 'argument' => \Exception::class,
-                'messsage' => $message,
+                'message'  => $message,
             ],
 
             'ImplementsInterfaceTest.php:'.__LINE__ => [
                 'argument' => ExampleTrait::class,
-                'messsage' => $message,
+                'message'  => $message,
             ],
         ];
     }

@@ -3,7 +3,7 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
@@ -75,6 +75,18 @@ final class ExtendsClassTest extends TestCase
                 'class'   => \Exception::class,
                 'subject' => new \ErrorException(),
             ],
+
+            // class extends class - case insensitive match
+            'ExtendsClassTest.php:'.__LINE__ => [
+                'class'   => 'eXceptiOn',
+                'subject' => 'errOreXceptiOn',
+            ],
+
+            // object of class that extends class -- case insensitive match
+            'ExtendsClassTest.php:'.__LINE__ => [
+                'class'   => 'eXceptiOn',
+                'subject' => new \ErrorException(),
+            ],
         ];
     }
 
@@ -113,17 +125,17 @@ final class ExtendsClassTest extends TestCase
         return [
             'ExtendsClassTest.php:'.__LINE__ => [
                 'argument' => 'non-class string',
-                'messsage' => $message,
+                'message'  => $message,
             ],
 
             'ExtendsClassTest.php:'.__LINE__ => [
                 'argument' => \Throwable::class,
-                'messsage' => $message,
+                'message'  => $message,
             ],
 
             'ExtendsClassTest.php:'.__LINE__ => [
                 'argument' => ExampleTrait::class,
-                'messsage' => $message,
+                'message'  => $message,
             ],
         ];
     }
@@ -133,7 +145,7 @@ final class ExtendsClassTest extends TestCase
      *
      * @param mixed $subject
      */
-    public function testConstraintSucceeds(string $class, $subject): void
+    public function testConstraintSucceeds(string $class, $subject, string $message = ''): void
     {
         $constraint = ExtendsClass::create($class);
 

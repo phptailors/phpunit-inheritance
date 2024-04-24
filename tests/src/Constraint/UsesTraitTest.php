@@ -3,7 +3,7 @@
 /*
  * This file is part of phptailors/phpunit-extensions.
  *
- * Copyright (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * Copyright (c) Paweł Tomulik <pawel@tomulik.pl>
  *
  * View the LICENSE file for full copyright and license information.
  */
@@ -83,6 +83,19 @@ final class UsesTraitTest extends TestCase
                 'trait'   => ExampleTrait::class,
                 'subject' => ExampleTraitUsingTrait::class,
             ],
+            // case-insensitive match
+            'UsesTraitTest.php:'.__LINE__ => [
+                'trait'   => 'tailors\\PhPunit\\eXamples\\inhEritance\eXampletRait',
+                'subject' => 'tailors\\PhPunit\\eXamples\\inhEritance\eXampleclAssuSingtRait',
+            ],
+            'UsesTraitTest.php:'.__LINE__ => [
+                'trait'   => 'tailors\\PhPunit\\eXamples\\inhEritance\eXampletRait',
+                'subject' => new ExampleClassUsingTrait(),
+            ],
+            'UsesTraitTest.php:'.__LINE__ => [
+                'trait'   => 'tailors\\PhPunit\\eXamples\\inhEritance\eXampletRait',
+                'subject' => 'tailors\\PhPunit\\eXamples\\inhEritance\eXampletRaituSingtRait',
+            ],
         ];
     }
 
@@ -121,17 +134,17 @@ final class UsesTraitTest extends TestCase
         return [
             'UsesTraitTest.php:'.__LINE__ => [
                 'argument' => 'non-trait string',
-                'messsage' => $message,
+                'message'  => $message,
             ],
 
             'UsesTraitTest.php:'.__LINE__ => [
                 'argument' => \Exception::class,
-                'messsage' => $message,
+                'message'  => $message,
             ],
 
             'UsesTraitTest.php:'.__LINE__ => [
                 'argument' => \Throwable::class,
-                'messsage' => $message,
+                'message'  => $message,
             ],
         ];
     }

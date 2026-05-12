@@ -21,9 +21,7 @@ trait ImplementsInterfaceTrait
     /**
      * Evaluates a \PHPUnit\Framework\Constraint\Constraint matcher object.
      *
-     * @param mixed      $value
-     * @param Constraint $constraint
-     * @param string     $message
+     * @param mixed $value
      *
      * @throws ExpectationFailedException
      * @throws InvalidArgumentException

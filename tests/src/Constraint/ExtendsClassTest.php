@@ -10,33 +10,28 @@
 
 namespace Tailors\PHPUnit\Constraint;
 
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\Examples\Inheritance\ExampleTrait;
-use Tailors\PHPUnit\Inheritance\AbstractConstraint;
-use Tailors\PHPUnit\Inheritance\ConstraintImplementationTrait;
 use Tailors\PHPUnit\InvalidArgumentException;
 
 /**
+ * @small
+ *
+ * @covers \Tailors\PHPUnit\Constraint\ExtendsClass
+ * @covers \Tailors\PHPUnit\Constraint\InheritanceConstraintTestTrait
+ * @covers \Tailors\PHPUnit\Inheritance\AbstractConstraint
+ * @covers \Tailors\PHPUnit\Inheritance\ConstraintImplementationTrait
+ *
  * @internal This class is not covered by the backward compatibility promise
  *
  * @psalm-internal Tailors\PHPUnit
  */
-#[CoversClass(ExtendsClass::class)]
-#[CoversTrait(InheritanceConstraintTestTrait::class)]
-#[CoversClass(AbstractConstraint::class)]
-#[CoversTrait(ConstraintImplementationTrait::class)]
-#[Small]
 final class ExtendsClassTest extends TestCase
 {
     use InheritanceConstraintTestTrait;
 
     // required by InheritanceConstraintTestTrait
-    #[\Override]
     public static function provFailureDescriptionOfCustomUnaryOperator(): iterable
     {
         return [
@@ -145,15 +140,19 @@ final class ExtendsClassTest extends TestCase
         ];
     }
 
-    #[DataProvider('provExtendsClass')]
-    public function testConstraintSucceeds(string $class, mixed $subject): void
+    /**
+     * @dataProvider provExtendsClass
+     */
+    public function testConstraintSucceeds(string $class, mixed $subject, string $message = ''): void
     {
         $constraint = ExtendsClass::create($class);
 
         self::assertTrue($constraint->evaluate($subject, '', true));
     }
 
-    #[DataProvider('provNotExtendsClass')]
+    /**
+     * @dataProvider provNotExtendsClass
+     */
     public function testConstraintFails(string $class, mixed $subject, string $message): void
     {
         $constraint = ExtendsClass::create($class);
@@ -164,7 +163,9 @@ final class ExtendsClassTest extends TestCase
         $constraint->evaluate($subject);
     }
 
-    #[DataProvider('provThrowsInvalidArgumentException')]
+    /**
+     * @dataProvider provThrowsInvalidArgumentException
+     */
     public function testThrowsInvalidArgumentException(string $argument, string $message): void
     {
         self::expectException(InvalidArgumentException::class);

@@ -28,17 +28,11 @@ abstract class AbstractConstraint extends Constraint
     /**
      * Initializes the constraint.
      */
-    protected function __construct(
-        /**
-         * @psalm-readonly
-         */
-        private readonly string $expected
-    ) {}
+    protected function __construct(private readonly string $expected) {}
 
     /**
      * Returns a string representation of the constraint.
      */
-    #[\Override]
     final public function toString(): string
     {
         return sprintf('%s %s', $this->verb(), $this->expected);
@@ -50,7 +44,6 @@ abstract class AbstractConstraint extends Constraint
      *
      * @param mixed $other value or object to evaluate
      */
-    #[\Override]
     final public function matches($other): bool
     {
         if (is_object($other)) {
@@ -71,7 +64,6 @@ abstract class AbstractConstraint extends Constraint
      *
      * @param mixed $other evaluated value or object
      */
-    #[\Override]
     final public function failureDescription($other): string
     {
         return $this->short($other).' '.$this->toString();
@@ -116,7 +108,6 @@ abstract class AbstractConstraint extends Constraint
      * @param Operator $operator the $operator of the expression
      * @param mixed    $role     role of $this constraint in the $operator expression
      */
-    #[\Override]
     final protected function toStringInContext(Operator $operator, $role): string
     {
         if ($operator instanceof LogicalNot) {
@@ -142,7 +133,6 @@ abstract class AbstractConstraint extends Constraint
      * @param mixed    $role     role of $this constraint in the $operator expression
      * @param mixed    $other    evaluated value or object
      */
-    #[\Override]
     final protected function failureDescriptionInContext(Operator $operator, $role, $other): string
     {
         $string = $this->toStringInContext($operator, $role);

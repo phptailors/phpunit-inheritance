@@ -10,7 +10,7 @@
 
 namespace Tailors\PHPUnit\Inheritance;
 
-use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -86,7 +86,7 @@ final class FaultyConstraint2 extends AbstractConstraint
  *
  * @psalm-internal Tailors\PHPUnit
  */
-#[CoversTrait(ConstraintImplementationTrait::class)]
+#[CoversClass(ConstraintImplementationTrait::class)]
 #[Small]
 final class ConstraintImplementationTraitTest extends TestCase
 {

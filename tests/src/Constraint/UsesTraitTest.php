@@ -11,7 +11,6 @@
 namespace Tailors\PHPUnit\Constraint;
 
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -29,17 +28,16 @@ use Tailors\PHPUnit\InvalidArgumentException;
  *
  * @psalm-internal Tailors\PHPUnit
  */
-#[CoversTrait(InheritanceConstraintTestTrait::class)]
+#[CoversClass(InheritanceConstraintTestTrait::class)]
 #[CoversClass(UsesTrait::class)]
 #[CoversClass(AbstractConstraint::class)]
-#[CoversTrait(ConstraintImplementationTrait::class)]
+#[CoversClass(ConstraintImplementationTrait::class)]
 #[Small]
 final class UsesTraitTest extends TestCase
 {
     use InheritanceConstraintTestTrait;
 
     // required by InheritanceConstraintTestTrait
-    #[\Override]
     public static function provFailureDescriptionOfCustomUnaryOperator(): iterable
     {
         return [

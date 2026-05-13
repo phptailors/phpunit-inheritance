@@ -10,7 +10,7 @@
 
 namespace Tailors\PHPUnit;
 
-use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -23,7 +23,7 @@ use Tailors\PHPUnit\Examples\Inheritance\ExampleTrait;
  *
  * @psalm-internal Tailors\PHPUnit
  */
-#[CoversTrait(ImplementsInterfaceTrait::class)]
+#[CoversClass(ImplementsInterfaceTrait::class)]
 #[Small]
 final class ImplementsInterfaceTraitTest extends TestCase
 {

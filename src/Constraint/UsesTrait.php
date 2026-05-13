@@ -20,23 +20,36 @@ final class UsesTrait extends AbstractConstraint
 {
     use ConstraintImplementationTrait;
 
-    private static string $verb = 'uses trait';
-    private static string $negatedVerb = 'does not use trait';
+    /**
+     * @var string
+     */
+    private static $verb = 'uses trait';
 
     /**
+     * @var string
+     */
+    private static $negatedVerb = 'does not use trait';
+
+    /**
+     * @var array
+     *
      * @psalm-var array{0:callable, 1:string}
      */
-    private static array $validation = ['trait_exists', 'a trait-string'];
+    private static $validation = ['trait_exists', 'a trait-string'];
 
     /**
+     * @var callable
+     *
      * @psalm-var callable
      */
-    private static mixed $inheritance = 'class_uses';
+    private static $inheritance = 'class_uses';
 
     /**
+     * @var array
+     *
      * @psalm-var array{0:callable, 1:callable}
      */
-    private static array $supports = ['class_exists', 'trait_exists'];
+    private static $supports = ['class_exists', 'trait_exists'];
 }
 
 // vim: syntax=php sw=4 ts=4 et:

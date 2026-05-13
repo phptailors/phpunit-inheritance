@@ -92,6 +92,9 @@ trait ConstraintImplementationTrait
     }
 
     /**
+     * @param mixed $function
+     * @param mixed $value
+     *
      * @psalm-template ValueType $value
      *
      * @param-out ValueType $value
@@ -102,13 +105,13 @@ trait ConstraintImplementationTrait
      *
      * @psalm-param ValueType $value
      */
-    private static function assertReturnValueIsListOfStrings(mixed $function, mixed &$value): void
+    private static function assertReturnValueIsListOfStrings($function, &$value): void
     {
         if (!is_array($value)) {
             throw InvalidReturnValueException::fromExpectedTypeAndActualValue($function, 'array', $value);
         }
 
-        $strings = array_filter($value, fn (mixed $val) => is_string($val));
+        $strings = array_filter($value, 'is_string');
 
         if (count($strings) < count($value)) {
             throw InvalidReturnValueException::fromExpectedTypeAndActualValue($function, 'array of strings', $value);

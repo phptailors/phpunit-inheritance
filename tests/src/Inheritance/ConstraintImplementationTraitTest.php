@@ -10,9 +10,6 @@
 
 namespace Tailors\PHPUnit\Inheritance;
 
-use PHPUnit\Framework\Attributes\CoversTrait;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
-use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\InvalidReturnValueException;
 
@@ -27,23 +24,36 @@ final class FaultyConstraint1 extends AbstractConstraint
         inheritance as public;
     }
 
-    private static string $verb = 'is string';
-    private static string $negatedVerb = 'is not a string';
+    /**
+     * @var string
+     */
+    private static $verb = 'is string';
 
     /**
+     * @var string
+     */
+    private static $negatedVerb = 'is not a string';
+
+    /**
+     * @var array
+     *
      * @psalm-var array{0:callable, 1:string}
      */
-    private static array $validation = ['is_string', 'a string'];
+    private static $validation = ['is_string', 'a string'];
 
     /**
+     * @var callable
+     *
      * @psalm-var callable
      */
-    private static mixed $inheritance = 'strlen';
+    private static $inheritance = 'strlen';
 
     /**
+     * @var array
+     *
      * @psalm-var array{0:callable}
      */
-    private static array $supports = ['is_string'];
+    private static $supports = ['is_string'];
 }
 
 /**
@@ -57,23 +67,36 @@ final class FaultyConstraint2 extends AbstractConstraint
         inheritance as public;
     }
 
-    private static string $verb = 'is string';
-    private static string $negatedVerb = 'is not a string';
+    /**
+     * @var string
+     */
+    private static $verb = 'is string';
 
     /**
+     * @var string
+     */
+    private static $negatedVerb = 'is not a string';
+
+    /**
+     * @var array
+     *
      * @psalm-var array{0:callable, 1:string}
      */
-    private static array $validation = ['is_string', 'a string'];
+    private static $validation = ['is_string', 'a string'];
 
     /**
+     * @var callable
+     *
      * @psalm-var callable
      */
-    private static mixed $inheritance = [self::class, 'arrayWithStrlen'];
+    private static $inheritance = [self::class, 'arrayWithStrlen'];
 
     /**
+     * @var array
+     *
      * @psalm-var array{0:callable}
      */
-    private static array $supports = ['is_string'];
+    private static $supports = ['is_string'];
 
     public static function arrayWithStrlen(string $str): array
     {
@@ -82,15 +105,19 @@ final class FaultyConstraint2 extends AbstractConstraint
 }
 
 /**
+ * @small
+ *
+ * @covers \Tailors\PHPUnit\Inheritance\ConstraintImplementationTrait
+ *
  * @internal This class is not covered by the backward compatibility promise
  *
  * @psalm-internal Tailors\PHPUnit
  */
-#[CoversTrait(ConstraintImplementationTrait::class)]
-#[Small]
 final class ConstraintImplementationTraitTest extends TestCase
 {
-    #[RunInSeparateProcess]
+    /**
+     * @runInSeparateProcess
+     */
     public function testInheritanceThrowsInvalidReturnValueException(): void
     {
         $constraint = FaultyConstraint1::create('stdClass');
@@ -106,7 +133,9 @@ final class ConstraintImplementationTraitTest extends TestCase
         $constraint->inheritance('');
     }
 
-    #[RunInSeparateProcess]
+    /**
+     * @runInSeparateProcess
+     */
     public function testInheritanceThrowsInvalidReturnValueException2(): void
     {
         $constraint = FaultyConstraint2::create('stdClass');

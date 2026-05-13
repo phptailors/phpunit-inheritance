@@ -13,6 +13,7 @@ namespace Tailors\PHPUnit\Inheritance;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Operator;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
 use Tailors\PHPUnit\Common\Exporter;
 
 /**
@@ -26,19 +27,23 @@ use Tailors\PHPUnit\Common\Exporter;
 abstract class AbstractConstraint extends Constraint
 {
     /**
+     * @var string
+     *
+     * @psalm-readonly
+     */
+    private $expected;
+
+    /**
      * Initializes the constraint.
      */
-    protected function __construct(
-        /**
-         * @psalm-readonly
-         */
-        private readonly string $expected
-    ) {}
+    protected function __construct(string $expected)
+    {
+        $this->expected = $expected;
+    }
 
     /**
      * Returns a string representation of the constraint.
      */
-    #[\Override]
     final public function toString(): string
     {
         return sprintf('%s %s', $this->verb(), $this->expected);
@@ -50,17 +55,16 @@ abstract class AbstractConstraint extends Constraint
      *
      * @param mixed $other value or object to evaluate
      */
-    #[\Override]
     final public function matches($other): bool
     {
         if (is_object($other)) {
-            $other = $other::class;
+            $other = get_class($other);
         }
         if (!is_string($other) || !$this->supports($other)) {
             return false;
         }
 
-        return in_array(strtolower($this->expected), array_map(fn (string $val) => strtolower($val), $this->inheritance($other)), true);
+        return in_array(strtolower($this->expected), array_map('strtolower', $this->inheritance($other)), true);
     }
 
     /**
@@ -71,7 +75,6 @@ abstract class AbstractConstraint extends Constraint
      *
      * @param mixed $other evaluated value or object
      */
-    #[\Override]
     final public function failureDescription($other): string
     {
         return $this->short($other).' '.$this->toString();
@@ -116,7 +119,6 @@ abstract class AbstractConstraint extends Constraint
      * @param Operator $operator the $operator of the expression
      * @param mixed    $role     role of $this constraint in the $operator expression
      */
-    #[\Override]
     final protected function toStringInContext(Operator $operator, $role): string
     {
         if ($operator instanceof LogicalNot) {
@@ -141,8 +143,9 @@ abstract class AbstractConstraint extends Constraint
      * @param Operator $operator the $operator of the expression
      * @param mixed    $role     role of $this constraint in the $operator expression
      * @param mixed    $other    evaluated value or object
+     *
+     * @throws InvalidArgumentException
      */
-    #[\Override]
     final protected function failureDescriptionInContext(Operator $operator, $role, $other): string
     {
         $string = $this->toStringInContext($operator, $role);
@@ -156,11 +159,15 @@ abstract class AbstractConstraint extends Constraint
 
     /**
      * Returns short representation of $subject for failureDescription().
+     *
+     * @param mixed $subject
+     *
+     * @throws InvalidArgumentException
      */
-    private function short(mixed $subject): string
+    private function short($subject): string
     {
         if (is_object($subject)) {
-            $subject = 'object '.$subject::class;
+            $subject = 'object '.get_class($subject);
         } elseif (!is_string($subject) || !$this->supports($subject)) {
             $subject = Exporter::export($subject);
         }

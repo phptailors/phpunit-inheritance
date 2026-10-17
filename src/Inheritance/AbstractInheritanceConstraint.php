@@ -23,17 +23,12 @@ use Tailors\PHPUnit\Common\Exporter;
  *
  * @psalm-internal Tailors\PHPUnit
  */
-abstract class AbstractConstraint extends Constraint
+abstract class AbstractInheritanceConstraint extends Constraint
 {
     /**
      * Initializes the constraint.
      */
-    protected function __construct(
-        /**
-         * @psalm-readonly
-         */
-        private readonly string $expected
-    ) {}
+    protected function __construct(private readonly string $expected) {}
 
     /**
      * Returns a string representation of the constraint.
@@ -54,11 +49,12 @@ abstract class AbstractConstraint extends Constraint
         if (is_object($other)) {
             $other = $other::class;
         }
+
         if (!is_string($other) || !$this->supports($other)) {
             return false;
         }
 
-        return in_array(strtolower($this->expected), array_map(fn (string $val) => strtolower($val), $this->inheritance($other)), true);
+        return in_array(strtolower($this->expected), array_map(strtolower(...), $this->inheritance($other)), true);
     }
 
     /**
@@ -75,12 +71,12 @@ abstract class AbstractConstraint extends Constraint
     }
 
     /**
-     * Returns short description of what we examine, e.g. ``'impements interface'``.
+     * Returns short description of what we examine, e.g. ``'implements interface'``.
      */
     abstract protected function verb(): string;
 
     /**
-     * Returns short negated description of what we examine, e.g. ``'does not impement interface'``.
+     * Returns short negated description of what we examine, e.g. ``'does not implement interface'``.
      */
     abstract protected function negatedVerb(): string;
 
@@ -89,7 +85,7 @@ abstract class AbstractConstraint extends Constraint
      * implements, parent classes it extends or traits it uses, depending on
      * the actual implementation of this constraint.
      *
-     * @psalm-return array<string>
+     * @psalm-return array<string, string>
      */
     abstract protected function inheritance(string $class): array;
 
@@ -126,7 +122,7 @@ abstract class AbstractConstraint extends Constraint
      * Returns the description of the failure when this constraint appears in
      * context of an $operator expression.
      *
-     * The purpose of this method is to provide meaningful failue description
+     * The purpose of this method is to provide meaningful failure description
      * in context of operators such as LogicalNot. Native PHPUnit constraints
      * are supported out of the box by LogicalNot, but externally developed
      * ones had no way to provide correct messages in this context.
@@ -151,8 +147,10 @@ abstract class AbstractConstraint extends Constraint
 
     /**
      * Returns short representation of $subject for failureDescription().
+     *
+     * @param mixed $subject
      */
-    private function short(mixed $subject): string
+    private function short($subject): string
     {
         if (is_object($subject)) {
             $subject = 'object '.$subject::class;
